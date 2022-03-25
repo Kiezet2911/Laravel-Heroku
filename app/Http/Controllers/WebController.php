@@ -55,8 +55,8 @@ class WebController extends Controller
             return $book;
         }
         //
-        $book = json_decode(Http::get($url), true);   
-        
+        $book = json_decode(Http::get($url), true);
+
         //      
         return $book;
     }
@@ -82,10 +82,15 @@ class WebController extends Controller
     function cart(Request $req)
     {
         if (isset($_GET['id'])) {
+            if (isset($_GET['token'])) {
+                $image = $_GET['image'] . '&token=' . $_GET['token'];
+            } else {
+                $image = $_GET['image'];
+            }
             $itemCart = [
                 "id" => $_GET['id'],
                 "name" => $_GET['name'],
-                "image" => $_GET['image'],
+                "image" =>  $image,
                 "price" => $_GET['price'],
                 "count" => 1
             ];
@@ -201,10 +206,9 @@ class WebController extends Controller
 
                 return view('cart', ['data' => $data, 'listCart' => $req->session()->get("idbookforcart")]);
             } else return view('cart', ['data', 'listCart' => []]);
-        } else{
-            if(session()->has("idbookforcart")) return view('cart', ['data', 'listCart' => $req->session()->get("idbookforcart")]);
+        } else {
+            if (session()->has("idbookforcart")) return view('cart', ['data', 'listCart' => $req->session()->get("idbookforcart")]);
             else return view('cart', ['data', 'listCart' => []]);
-    
         }
     }
 
