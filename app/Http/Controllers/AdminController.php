@@ -61,11 +61,19 @@ class AdminController extends Controller
                 $pages = 1;
 
                 if (isset($_GET["pages"])) {
-                    $pages = $_GET["pages"];
+                    if ($_GET["pages"] <= 0) {
+                        $pages = 1;
+                    } else {
+                        $pages = $_GET["pages"];
+                    }
                 }
 
                 $url = "https://bookingapiiiii.herokuapp.com/";
                 $listcount = json_decode(Http::get($url . 'sach'), true);
+                $TotalPage = ceil(count($listcount) / $last);
+                if ($pages > $TotalPage) {
+                    $pages = $TotalPage;
+                }
                 $list = json_decode(Http::get($url . 'sachpagination/' . $pages . "/" . $last), true);
                 if ($listcount == null) {
                     $total = 0;
@@ -85,9 +93,12 @@ class AdminController extends Controller
                 $pages = 1;
 
                 if (isset($_GET["pages"])) {
-                    $pages = $_GET["pages"];
+                    if ($_GET["pages"] <= 0) {
+                        $pages = 1;
+                    } else {
+                        $pages = $_GET["pages"];
+                    }
                 }
-
                 $url = "https://bookingapiiiii.herokuapp.com/";
                 $role = "false";
                 $list = json_decode(Http::get($url . 'khachhangforadmin/' . $role . "/" . $pages . "/" . $last), true);
@@ -113,11 +124,18 @@ class AdminController extends Controller
                 $pages = 1;
 
                 if (isset($_GET["pages"])) {
-                    $pages = $_GET["pages"];
+                    if ($_GET["pages"] <= 0) {
+                        $pages = 1;
+                    } else {
+                        $pages = $_GET["pages"];
+                    }
                 }
-
                 $url = "https://bookingapiiiii.herokuapp.com/";
                 $listcount = json_decode(Http::get($url . 'DonHang'), true);
+                $TotalPage = ceil(count($listcount) / $last);
+                if ($pages > $TotalPage) {
+                    $pages = $TotalPage;
+                }
                 $list = json_decode(Http::get($url . 'DonHang/' . $pages . "/" . $last), true);
                 if ($listcount == null) {
                     $total = 0;

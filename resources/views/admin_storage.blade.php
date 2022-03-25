@@ -44,7 +44,7 @@
 
     <ul class="pagination" id="pagination">
         <?php
-        //Button Number pages
+        //Button Number pages       
         $TotalPage = ceil($total / $last);
         if ($pages > 1 && $TotalPage > 1) {
             echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages - 1) . '">Prev</a></li>';

@@ -30,9 +30,12 @@
 
             $last = 8;
             $pages = 1;
-
             if (isset($_GET["pages"])) {
-                $pages = $_GET["pages"];
+                if ($_GET["pages"] <= 0) {
+                    $pages = 1;
+                } else {
+                    $pages = $_GET["pages"];
+                }
             }
             //Lấy Danh Sách Sản Phẩm
             $list = WebController::getlist($pages, $last);
@@ -41,36 +44,42 @@
             ?>
                 <h4><?php echo 'Không Có Sách Này' ?></h4>
         </div>
-        <?php
+    <?php
+            } else if ($list['data'] == null) {
+    ?>
+        <h4><?php echo 'Không Có Sách Này' ?></h4>
+    </div>
+    <?php
             } else {
+
                 $total = $list['count'];
                 foreach ($list['data'] as $data) {
                     if (isset($data["Messager"])) {
 
-        ?>
-                <h4><?php echo $data["Messager"] ?></h4>
-            <?php
-                    } else {
-            ?>
-                <a class="Book" href="/details?id={{$data['id']}}">
-                    <div class="Book__Img">
-                        <img src="<?php echo $data["Anh"] ?>" alt="">
-                    </div>
-                    <div class="Book__Content">
-                        <div class="Book__Content-BookName">
-                            <h3><?php echo $data["Tensach"] ?></h3>
-                            <p class="Book__Content-Author"><?php echo $data["TenTG"] ?></p>
-                            <p class="Book__Content-Price"><?php echo number_format($data["Giaban"], 3, '.', '') ?>đ</p>
-                        </div>
-                    </div>
-                </a>
+    ?>
+            <h4><?php echo $data["Messager"] ?></h4>
         <?php
+                    } else {
+        ?>
+            <a class="Book" href="/details?id={{$data['id']}}">
+                <div class="Book__Img">
+                    <img src="<?php echo $data["Anh"] ?>" alt="">
+                </div>
+                <div class="Book__Content">
+                    <div class="Book__Content-BookName">
+                        <h3><?php echo $data["Tensach"] ?></h3>
+                        <p class="Book__Content-Author"><?php echo $data["TenTG"] ?></p>
+                        <p class="Book__Content-Price"><?php echo number_format($data["Giaban"], 3, '.', '') ?>đ</p>
+                    </div>
+                </div>
+            </a>
+    <?php
                     }
                 } ?>
-    </div>
+</div>
 
-    <ul class="pagination" id="pagination">
-        <?php
+<ul class="pagination" id="pagination">
+    <?php
                 $TotalPage = ceil($total / $last);
 
                 if ($pages > 1 && $TotalPage > 1) {
@@ -88,33 +97,33 @@
                     if (isset($_GET["chude"])) {
 
                         if ($pages == $i) {
-        ?>
-                    <li class="page-item active"><a class="page-link" href="?pages=<?php echo $i ?>&chude=<?php echo $_GET["chude"] ?>"><?php echo $i ?></a></li>
-                <?php
+    ?>
+                <li class="page-item active"><a class="page-link" href="?pages=<?php echo $i ?>&chude=<?php echo $_GET["chude"] ?>"><?php echo $i ?></a></li>
+            <?php
                         } else {
-                ?>
-                    <li class="page-item"><a class="page-link" href="?pages=<?php echo $i ?>&chude=<?php echo $_GET["chude"] ?>"><?php echo $i ?></a></li>
-                <?php
+            ?>
+                <li class="page-item"><a class="page-link" href="?pages=<?php echo $i ?>&chude=<?php echo $_GET["chude"] ?>"><?php echo $i ?></a></li>
+            <?php
                         }
                     } elseif (isset($_GET["search"])) {
                         if ($pages == $i) {
-                ?>
-                    <li class="page-item active"><a class="page-link" href="?pages=<?php echo $i ?>&search=<?php echo $_GET["search"] ?>"><?php echo $i ?></a></li>
-                <?php
+            ?>
+                <li class="page-item active"><a class="page-link" href="?pages=<?php echo $i ?>&search=<?php echo $_GET["search"] ?>"><?php echo $i ?></a></li>
+            <?php
                         } else {
-                ?>
-                    <li class="page-item"><a class="page-link" href="?pages=<?php echo $i ?>&search=<?php echo $_GET["search"] ?>"><?php echo $i ?></a></li>
-                <?php
+            ?>
+                <li class="page-item"><a class="page-link" href="?pages=<?php echo $i ?>&search=<?php echo $_GET["search"] ?>"><?php echo $i ?></a></li>
+            <?php
                         }
                     } else {
                         if ($pages == $i) {
-                ?>
-                    <li class="page-item active"><a class="page-link" href="?pages=<?php echo $i ?>"><?php echo $i ?></a></li>
-                <?php
+            ?>
+                <li class="page-item active"><a class="page-link" href="?pages=<?php echo $i ?>"><?php echo $i ?></a></li>
+            <?php
                         } else {
-                ?>
-                    <li class="page-item"><a class="page-link" href="?pages=<?php echo $i ?>"><?php echo $i ?></a></li>
-    <?php }
+            ?>
+                <li class="page-item"><a class="page-link" href="?pages=<?php echo $i ?>"><?php echo $i ?></a></li>
+<?php }
                     }
                 }
 
@@ -128,8 +137,8 @@
                     }
                 }
             }
-    ?>
-    </ul>
+?>
+</ul>
 
 
 </div>

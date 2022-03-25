@@ -24,7 +24,18 @@
             </div>
             <span>Hiện Không Có Tài Khoản Nào Được Đăng Ký</span>
         </div>
+    <?php
+    } else if ($list['data'] == null) {
+
+    ?>
+        <div class='Admin__Account-Empty'>
+            <div class='Admin__Account-Empty-image'>
+                <img src='https://i.pinimg.com/originals/ec/0c/0c/ec0c0c652f7a9fb965bf08f45c4403fe.gif' alt=''>
+            </div>
+            <span>Hiện Không Có Tài Khoản Nào Ở Trang Này</span>
+        </div>
         <?php
+
     } else {
         $total = $list['count'];
 
