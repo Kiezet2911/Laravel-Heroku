@@ -85,7 +85,7 @@ class WebController extends Controller
             $itemCart = [
                 "id" => $_GET['id'],
                 "name" => $_GET['name'],
-                "image" => $_GET['image'] . '&token=' . $_GET['token'],
+                "image" => $_GET['image'],
                 "price" => $_GET['price'],
                 "count" => 1
             ];
