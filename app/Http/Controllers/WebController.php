@@ -83,6 +83,7 @@ class WebController extends Controller
     {
         if (isset($_GET['id'])) {
             if (isset($_GET['token'])) {
+                //Token Là Ảnh Trên Firebase
                 $image = $_GET['image'] . '&token=' . $_GET['token'];
             } else {
                 $image = $_GET['image'];
@@ -94,7 +95,6 @@ class WebController extends Controller
                 "price" => $_GET['price'],
                 "count" => 1
             ];
-
 
             if ($req->session()->get("idbookforcart") != null) {
                 $arr = $req->session()->get("idbookforcart");
