@@ -1,0 +1,55 @@
+@import
+	url("https://fonts.googleapis.com/css2?family=Akaya+Telivigala&display=swap")
+	;
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 5px #111;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #888;
+}
+
+.navbar-brand {
+	font-family: 'Akaya Telivigala', cursive;
+	font-size: 30px;
+}
+
+ion-icon {
+	font-size: 25px;
+	padding: 4px;
+}
+
+#navbarMenu ul li a {
+	position: relative;
+}
+
+#navbarMenu ul li a::after {
+	content: '';
+	display: block;
+	height: 2px;
+	background-color: black;
+	width: 0px;
+	margin-top: 1px;
+}
+
+#navbarMenu ul li a:hover::after {
+	width: 100%;
+	-webkit-transition: .5s;
+	transition: .5s;
+}
+
+.dropdown-item:active {
+	background-color: black !important;
+	color: white;
+}
+
+.nav-link:hover {
+	color: black !important;
+}
