@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <a class="Book__info-btnCart"
-                            href="/cart?id=<?php echo $bk['id']; ?>&name=<?php echo $bk['Tensach']; ?>&image=<?php echo $bk['Anh']; ?>&price=<?php echo number_format($bk['Giaban'], 3, '.', ''); ?>">
+                            href="/CreateCart?id=<?php echo $bk['id']; ?>&name=<?php echo $bk['Tensach']; ?>&image=<?php echo $bk['Anh']; ?>&price=<?php echo number_format($bk['Giaban'], 3, '.', ''); ?>">
                             <span>Chọn Mua</span>
                         </a>
                     </div>

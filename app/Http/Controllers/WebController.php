@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Redirect;
 use PhpParser\Node\Expr\Cast\Double;
 
 use function PHPUnit\Framework\isEmpty;
@@ -78,8 +79,9 @@ class WebController extends Controller
         return view('details', ['details' => $bookdetails]);
     }
 
-    function cart(Request $req)
+    function CreateCart(Request $req)
     {
+        $req->session()->remove('Mess');
         if (isset($_GET['id'])) {
             if (isset($_GET['token'])) {
                 //Token Là Ảnh Trên Firebase
@@ -178,13 +180,12 @@ class WebController extends Controller
                                 }
                                 if (isset($response['MaDonHang'])) {
                                     $req->session()->put("idbookforcart", []);
-                                    return view('/cart', ['listCart' =>
-                                    $req->session()->get("idbookforcart"), 'mess' => "Đặt hàng thành công nhá"]);
+                                    $req->session()->put('Mess', "Đặt hàng thành công nhá");
                                 } else {
-                                    return view('/cart', ['listCart' => $req->session()->get("idbookforcart"), 'mess' => $data['Messager'][0]]);
+                                    $req->session()->put('Mess', $data['Messager'][0]);
                                 }
                             } else {
-                                return view('/cart', ['listCart' => $req->session()->get("idbookforcart"), 'mess' => $data['Messager'][0]]);
+                                $req->session()->put('Mess', $data['Messager'][0]);
                             }
                         }
                     }
@@ -196,12 +197,15 @@ class WebController extends Controller
             }
         }
 
-        if (session()->has('UserLogin')) {
+        return Redirect('cart');
+    }
 
+    function cart(Request $req)
+    {
+        if (session()->has('UserLogin')) {
             if (isset(session()->get('UserLogin')['id']) && session()->has("idbookforcart")) {
                 $id = session()->get('UserLogin')['id'];
                 $data = Http::get('https://bookingapiiiii.herokuapp.com/khachhangbyid/' . $id);
-
 
                 return view('cart', ['data' => $data, 'listCart' => $req->session()->get("idbookforcart")]);
             } else return view('cart', ['data', 'listCart' => []]);
@@ -234,9 +238,9 @@ class WebController extends Controller
                 $data = Http::get('https://bookingapiiiii.herokuapp.com/khachhangbyid/' . $id);
 
 
-                return view('cart', ['data' => $data, 'listCart' => $req->session()->get("idbookforcart")]);
-            } else return view('cart', ['data', 'listCart' => $req->session()->get("idbookforcart")]);
-        } else return view('cart', ['data', 'listCart' => $req->session()->get("idbookforcart")]);
+                return Redirect('cart');
+            } else return Redirect('cart');
+        } else return Redirect('cart');
     }
 
     function minusCountItem(Request $req)
@@ -266,9 +270,9 @@ class WebController extends Controller
                 $data = Http::get('https://bookingapiiiii.herokuapp.com/khachhangbyid/' . $id);
 
 
-                return view('cart', ['data' => $data, 'listCart' => $req->session()->get("idbookforcart")]);
-            } else return view('cart', ['data', 'listCart' => $req->session()->get("idbookforcart")]);
-        } else return view('cart', ['data', 'listCart' => $req->session()->get("idbookforcart")]);
+                return Redirect('cart');
+            } else return Redirect('cart');
+        } else return Redirect('cart');
     }
 
 
@@ -279,11 +283,31 @@ class WebController extends Controller
 
             if (isset($req->session()->get('UserLogin')['id'])) {
                 $id = $req->session()->get('UserLogin')['id'];
+                $last = 3;
+                $pages = 1;
 
-                $data = json_decode(Http::get($url . 'DonHangbyidKH/' . $id));
-                //dd($data);
-                $detailhistory = json_decode(Http::get($url . 'CTDonHang/' . $id));
-                return view('historypay', ['listHistoryPay' => $data]);
+                if (isset($_GET["pages"])) {
+                    if (intval($_GET["pages"]) == 0) {
+                        $pages = 1;
+                    } else if ($_GET["pages"] <= 0) {
+                        $pages = 1;
+                    } else {
+                        $pages = intval($_GET["pages"]);
+                    }
+                }              
+                $data = json_decode(Http::get($url . "DonHangbyidKH/$id/$pages/$last"));
+                $listHistoryPay = $data->data;
+                //Nhận Tổng Đơn Hàng Từ Respone
+                $count = $data->count;
+                //Tính Tổng Số Page Sẽ Hiển Thị Bằng Celi      
+                $TotalPage = ceil($count / $last);
+                if ($pages > $TotalPage) {
+                    $pages = $TotalPage;
+                    $data = json_decode(Http::get($url . "DonHangbyidKH/$id/$pages/$last"));
+                    $listHistoryPay = $data->data;
+                }
+
+                return view('historypay', compact('listHistoryPay', 'pages', 'TotalPage'));
             } else {
                 return view('notlogin');
             }

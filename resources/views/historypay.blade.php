@@ -32,7 +32,7 @@
         } else {
 
 
-            foreach ($listHistoryPay as $data) { ?>
+            foreach ($listHistoryPay as $data) {   ?>
                 <div class="HistoryPay__Details">
 
                     <div class="HistoryPay__Bill-BillID"><?php echo $data->_id; ?></div>
@@ -55,7 +55,32 @@
 
                 </div>
 
-        <?php }
+            <?php }
+            ?>
+            <ul class="pagination" id="pagination">
+                <?php
+
+                if ($pages > 1 && $TotalPage > 1) {
+                    echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages - 1) . '">Prev</a></li>';
+                }
+                //Lap so pages
+                for ($i = 1; $i <= $TotalPage; $i++) {
+                    if ($pages == $i) {
+                ?>
+                        <li class="page-item active"><a class="page-link" href="?pages=<?php echo $i ?>"><?php echo $i ?></a></li>
+                    <?php
+                    } else {
+                    ?>
+                        <li class="page-item"><a class="page-link" href="?pages=<?php echo $i ?>"><?php echo $i ?></a></li>
+                <?php }
+                }
+                if ($pages < $TotalPage && $TotalPage > 1) {
+                    echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages + 1) . '">Next</a></li>';
+                }
+                ?>
+            </ul>
+
+        <?php
         } ?>
 
     </div>

@@ -68,6 +68,7 @@ Route::get('/products', [WebController::class, 'product'])->name('product');
 
 Route::view('/cart', 'cart');
 Route::get('/cart', [WebController::class, 'cart']);
+Route::get('/CreateCart', [WebController::class, 'CreateCart']);
 Route::get('plusCountItem', [WebController::class, 'plusCountItem']);
 Route::get('minusCountItem', [WebController::class, 'minusCountItem']);
 
