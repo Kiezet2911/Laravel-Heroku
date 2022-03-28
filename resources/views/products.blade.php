@@ -69,7 +69,7 @@
                     <div class="Book__Content-BookName">
                         <h3><?php echo $data["Tensach"] ?></h3>
                         <p class="Book__Content-Author"><?php echo $data["TenTG"] ?></p>
-                        <p class="Book__Content-Price"><?php echo number_format($data["Giaban"], 3, '.', '') ?>đ</p>
+                        <p class="Book__Content-Price"><?php echo number_format($data["Giaban"], 3, ",", ".") ?>đ</p>
                     </div>
                 </div>
             </a>

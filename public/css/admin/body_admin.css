@@ -463,6 +463,30 @@
 			color: red;
 			font-weight: 600;
 		}
+	
+	.Center{
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		min-height: 50vh;
+		width: 35vw;
+		margin: 0 auto;
+		animation: toVisible 1s 1 ease-in-out forwards;
+		user-select: none;
+	}
+		.Center h1{
+			font-size: 26px;
+			color: rgb(104, 103, 102);
+			-webkit-text-stroke: 1px;
+			-webkit-text-stroke-color: black;
+		}
+			.Center h1 span{
+				font-size: 30px;
+			}
+		.Center img{
+			width: 200px;
+			height: 200px;
+		}
 /* Responsive */
 @media screen and (max-width: 415px) {
 	.Admin__Container {
@@ -481,6 +505,17 @@
 		width: 100%;
 		border-radius: 0;
 	}
+	.Center{
+		flex-flow: column nowrap;
+		width: 60vw;
+		justify-content: center;
+	}
+		.Center h1{
+			font-size: 18px;
+		}
+			.Center h1 span{
+				font-size: 20px;
+			}
 }
 
 .checkbox {

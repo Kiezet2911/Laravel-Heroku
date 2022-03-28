@@ -25,7 +25,7 @@ class PaginationAPI
     public  function init($config = array())
     {
 
-        $url = "http://localhost:3000/";
+        $url = "https://bookingapiiiii.herokuapp.com/";
         /*
          * Lặp qua từng phần tử config truyền vào và gán vào config của đối tượng
          * trước khi gán vào thì phải kiểm tra thông số config truyền vào có nằm
@@ -96,7 +96,7 @@ class PaginationAPI
         // Trước tiên tính middle, đây chính là số nằm giữa trong khoảng tổng số trang
         // mà bạn muốn hiển thị ra màn hình
         $middle = ceil($this->_config['range'] / 2);
-        
+
         // Ta sẽ lâm vào các trường hợp như bên dưới
         // Trong trường hợp tổng số trang mà bé hơn range
         // thì ta show hết luôn, không cần tính toán làm gì

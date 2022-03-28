@@ -13,16 +13,16 @@
             <span style="font-weight: bold;">Mã Đơn Hàng: </span><span></span>{{$idBill}}
         </span>
         <span>
-            <span style="font-weight: bold;">Ngày Đặt: </span><span style="font-weight: bold;">{{$date}}</span>
+            <span style="font-weight: bold;">Ngày Đặt: </span><span>{{$date}}</span>
         </span>
         <span>
-            <span style="font-weight: bold;">Tổng Tiền: </span><span style="color: red; font-weight: 600;">{{$money}}</span>đ
+            <span style="font-weight: bold;">Tổng Tiền: </span><span style="color: red; font-weight: 600;">{{$money}}đ</span>
         </span>
         <span>
             @if($TT == 'true')
             <span style="font-weight: bold;">Tình Trạng: </span> <span style="color: green; font-weight: bold;">Đã Giao Hàng</span>
             @else
-            <span style="font-weight: bold;">Tình Trạng: </span> <span style="color: green; font-weight: bold;">Chưa Giao Hàng </span>
+            <span style="font-weight: bold;">Tình Trạng: </span> <span style="color: red; font-weight: bold;">Chưa Giao Hàng </span>
             @endif
         </span>
     </div>
@@ -35,22 +35,24 @@
 </div>
 
 @if($listCTBill !=null)
-@foreach($listCTBill as $item)
-<div class="DialogDetailsPay__infoPay-Details">
-    <div class="DialogDetailsPay__Image">
-        <img id="Anh" src="{{$item['Anhbia']}}" alt="#">
+<?php foreach ($listCTBill as $item) { ?>
+    <div class="DialogDetailsPay__infoPay-Details">
+        <div class="DialogDetailsPay__Image">
+            <img id="Anh" src="<?php echo $item['Anhbia'] ?>" alt="#">
+        </div>
+        <div id="Tensach" class="DialogDetailsPay__BookName">
+            <?php echo $item['Tensach'] ?>
+        </div>
+        <div id="Soluong" class="DialogDetailsPay__Count">
+            <?php echo $item['Soluong'] ?>
+        </div>
+        <div id="Dongia" class="DialogDetailsPay__Price">
+            <?php
+            $money = ($item["Dongia"] * $item["Soluong"]);
+            echo  number_format($money, 3, ",", "."); ?> đ
+        </div>
     </div>
-    <div id="Tensach" class="DialogDetailsPay__BookName">
-        {{$item['Tensach']}}
-    </div>
-    <div id="Soluong" class="DialogDetailsPay__Count">
-        {{$item['Soluong']}}
-    </div>
-    <div id="Dongia" class="DialogDetailsPay__Price">
-        {{$item['Dongia']}}
-    </div>
-</div>
-@endforeach
+<?php } ?>
 @else
 <p>Lỗi</p>
 @endif

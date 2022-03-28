@@ -18,7 +18,7 @@
             <span style="font-weight: bold;">Ngày Đặt Hàng: </span> {{$dateformat }}
         </span>
         <span>
-            <span style="font-weight: bold;">Tổng Tiền: </span><span style="color: red; font-weight: 600;">{{$money}}</span>
+            <span style="font-weight: bold;">Tổng Tiền: </span><span style="color: red; font-weight: 600;">{{$money}}đ</span>
         </span>
         <span>
             @if($TT == 'false')
@@ -39,16 +39,17 @@
     <div class="DialogDetailsHistoryPay__Title-Price">Thành Tiền</div>
 </div>
 @if($listCTBill !=null)
-@foreach($listCTBill as $item)
-<div class="DialogDetailsHistoryPay__infoPay-Details">
+<?php foreach ($listCTBill as $item) { ?>
+    <div class="DialogDetailsHistoryPay__infoPay-Details">
 
-    <div class="DialogDetailsHistoryPay__Image">
-        <img src="{{$item['Anhbia']}}" alt="Ảnh Sách">
+        <div class="DialogDetailsHistoryPay__Image">
+            <img src="<?php echo $item['Anhbia'] ?>" alt="Ảnh Sách">
+        </div>
+        <div class="DialogDetailsHistoryPay__BookName"><?php echo $item['Tensach'] ?></div>
+        <div class="DialogDetailsHistoryPay__Count"> <?php echo $item['Soluong'] ?></div>
+        <div class="DialogDetailsHistoryPay__Price"><?php $money = $item['Dongia'] * $item['Soluong'];
+                                                    echo number_format($money, 3, ",", "."); ?> đ</div>
+
     </div>
-    <div class="DialogDetailsHistoryPay__BookName">{{$item['Tensach']}}</div>
-    <div class="DialogDetailsHistoryPay__Count"> {{$item['Soluong']}}</div>
-    <div class="DialogDetailsHistoryPay__Price"> {{$item['Dongia']}}</div>
-
-</div>
-@endforeach
+<?php } ?>
 @endif

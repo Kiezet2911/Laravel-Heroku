@@ -289,6 +289,7 @@ class WebController extends Controller
         $url = "https://bookingapiiiii.herokuapp.com/";
         $dateformat = date('j \\ F Y', strtotime($date));
         $listCTBill = json_decode(Http::get($url . 'CTDonHangbyid/' . $idBill), true);
+        $money = number_format($money, 3, ",", ".");
         return view('dialogHistoryPay', compact('listCTBill', 'idBill', 'dateformat', 'money', 'TT'));
     }
 }

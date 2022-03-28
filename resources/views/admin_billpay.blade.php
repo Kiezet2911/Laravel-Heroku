@@ -14,7 +14,7 @@
     use App\Http\Pagination;
     use Illuminate\Support\Facades\Http;
 
-  
+
     $url = "https://bookingapiiiii.herokuapp.com/";
     $listcount = json_decode(Http::get($url . 'DonHang'), true);
     $config = array(
@@ -22,7 +22,7 @@
         'count'  => count($listcount), // Tổng số record
         'limit'         => 2, // limit
         'link_full'     => '?pages={page}', // Link full có dạng như sau: domain/com/page/{page}
-        'link_first'    => '/admin/storage-products', // Link trang đầu tiên
+        'link_first'    => '/admin/bill-pay', // Link trang đầu tiên
         'range'         => 5 // Số button trang bạn muốn hiển thị 
     );
 
@@ -57,7 +57,7 @@
                 </div>
             </div>
     <?php }
-    echo $paging->html();
+        echo $paging->html();
     }
     ?>
 </div>

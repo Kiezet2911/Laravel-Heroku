@@ -57,7 +57,7 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <span class="Cart__Products-group-product-info-price"><?php echo number_format($item['price'] * $item['count'], 3, '.', ''); ?>đ</span>
+                                    <span class="Cart__Products-group-product-info-price"><?php echo number_format($item['price'] * $item['count'],  3, ",", "."); ?>đ</span>
                                     <a class="btnDeleteItem" href="/CreateCart?deleteid=<?php echo $item['id']; ?>">
                                         <ion-icon id="btn-del" name="trash-outline"></ion-icon>
                                     </a>
@@ -111,7 +111,7 @@
                                 foreach ($listCart as $item) {
                                     $totalPrice += $item['price'] * $item['count'];
                                 }
-                                echo number_format($totalPrice, 3, '.', '') . 'đ';
+                                echo number_format($totalPrice, 3, ",", ".") . 'đ';
                                 ?>
                             </span>
                         </div>

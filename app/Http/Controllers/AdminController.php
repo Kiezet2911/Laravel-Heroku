@@ -15,7 +15,7 @@ class AdminController extends Controller
 
         if (isset($req->session()->get("UserLogin")["Role"])) {
             if ($req->session()->get("UserLogin")["Role"] == true) {
-                return view('admin_index');
+                return view('admin_index', ['Admin' => $req->session()->get("UserLogin")["HoTen"]]);
             } else return view('admin_notAdmin');
         } else return view('admin_notAdmin');
     }
@@ -90,7 +90,7 @@ class AdminController extends Controller
     {
         $url = "https://bookingapiiiii.herokuapp.com/";
         $listCTBill = json_decode(Http::get($url . 'CTDonHangbyid/' . $idBill), true);
-
+        $money = number_format($money, 3, ",", ".");
         return view('dialogBill', compact('idBill', 'date', 'money', 'TT', 'listCTBill'));
     }
 

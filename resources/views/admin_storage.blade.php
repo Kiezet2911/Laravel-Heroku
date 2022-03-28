@@ -5,7 +5,7 @@
 
     <div class="Title__Product-Image">Ảnh</div>
     <div class="Title__Product-Name">Tên Sách</div>
-    <div class="Title__Product-Count">Số Lượng Tồn</div>
+    <div class="Title__Product-Count">Còn</div>
     <div class="Title__Product-Price">Giá</div>
 
     <div class="Title__Setting">Thiết Lập</div>
