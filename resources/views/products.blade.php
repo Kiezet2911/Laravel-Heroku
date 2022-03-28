@@ -26,121 +26,76 @@
         <div class="Product__List" style="float: left;">
             <?php
 
-            use App\Http\Controllers\WebController;
+            use App\Http\PaginationAPI;
 
-            $last = 8;
-            $pages = 1;
-            if (isset($_GET["pages"])) {
-                if ($_GET["pages"] <= 0) {
-                    $pages = 1;
-                } else {
-                    $pages = $_GET["pages"];
-                }
+
+            $api =   "PhanTrang";
+            $body = '';
+            $link_full = '?pages={page}';
+            $link_first = '/products';
+            //
+            if (isset($_GET["chude"])) {
+                //
+                $api =   "PhanTrangChuDe/" . $_GET["chude"];
+                $link_full = '?pages={page}&chude=' . $_GET["chude"];
+                $link_first = '/products?chude=' . $_GET["chude"];
+                //
+            } elseif (isset($_GET["search"]) && $_GET["search"] != null) {
+                //
+                $api = "PhanTrangSearch";
+                $body =  $_GET["search"];
+                $link_full = '?pages={page}&search=' . $_GET["search"];
+                $link_first = '/products?search=' . $_GET["search"];
             }
+
             //Lấy Danh Sách Sản Phẩm
-            $list = WebController::getlist($pages, $last);
+            $config = array(
+                'api'  => $api,
+                'body'  => $body,
+                'current_page'  => isset($_GET['pages']) ? $_GET['pages'] : 1, // Trang hiện tại          
+                'limit'         => 8, // limit
+                'link_full'     => $link_full, // Link full có dạng như sau: domain/com/page/{page}
+                'link_first'    => $link_first, // Link trang đầu tiên
+                'range'         => 3 // Số button trang bạn muốn hiển thị 
+            );
 
-            if (!array_key_exists('count', $list)) {
-            ?>
-                <h4><?php echo 'Không Có Sách Này' ?></h4>
-        </div>
-    <?php
-            } else if ($list['data'] == null) {
-    ?>
-        <h4><?php echo 'Không Có Sách Này' ?></h4>
-    </div>
-    <?php
-            } else {
+            $paging = new PaginationAPI();
 
-                $total = $list['count'];
-                foreach ($list['data'] as $data) {
-                    if (isset($data["Messager"])) {
+            $paging->init($config);
 
-    ?>
-            <h4><?php echo $data["Messager"] ?></h4>
-        <?php
-                    } else {
-        ?>
-            <a class="Book" href="/details?id={{$data['id']}}">
-                <div class="Book__Img">
-                    <img src="<?php echo $data["Anh"] ?>" alt="">
-                </div>
-                <div class="Book__Content">
-                    <div class="Book__Content-BookName">
-                        <h3><?php echo $data["Tensach"] ?></h3>
-                        <p class="Book__Content-Author"><?php echo $data["TenTG"] ?></p>
-                        <p class="Book__Content-Price"><?php echo number_format($data["Giaban"], 3, ",", ".") ?>đ</p>
+            $list = $paging->Getlist();
+
+            if ($list == null) {
+                echo "  
+                <div class='Cart__Products-Empty'>
+                    <div class='Cart__Products-Empty-image'>
+                        <img src='https://i.pinimg.com/originals/ec/0c/0c/ec0c0c652f7a9fb965bf08f45c4403fe.gif' alt=''>
                     </div>
+                    <span>Not Found</span>
                 </div>
-            </a>
-    <?php
-                    }
-                } ?>
-</div>
+                ";
+            } else {
+                foreach ($list as $data) {
 
-<ul class="pagination" id="pagination">
-    <?php
-                $TotalPage = ceil($total / $last);
-
-                if ($pages > 1 && $TotalPage > 1) {
-                    if (isset($_GET["chude"])) {
-                        echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages - 1) . '&chude=' . $_GET["chude"] . '">Prev</a></li>';
-                    } elseif (isset($_GET["search"])) {
-                        echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages - 1) . '&chude=' . $_GET["search"] . '">Prev</a></li>';
-                    } else {
-                        echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages - 1) . '">Prev</a></li>';
-                    }
-                }
-                //Lap so pages
-                for ($i = 1; $i <= $TotalPage; $i++) {
-
-                    if (isset($_GET["chude"])) {
-
-                        if ($pages == $i) {
-    ?>
-                <li class="page-item active"><a class="page-link" href="?pages=<?php echo $i ?>&chude=<?php echo $_GET["chude"] ?>"><?php echo $i ?></a></li>
-            <?php
-                        } else {
             ?>
-                <li class="page-item"><a class="page-link" href="?pages=<?php echo $i ?>&chude=<?php echo $_GET["chude"] ?>"><?php echo $i ?></a></li>
+                    <a class="Book" href="/details?id={{$data->id}}">
+                        <div class="Book__Img">
+                            <img src="<?php echo $data->Anh ?>" alt="">
+                        </div>
+                        <div class="Book__Content">
+                            <div class="Book__Content-BookName">
+                                <h3><?php echo $data->Tensach ?></h3>
+                                <p class="Book__Content-Author"><?php echo $data->TenTG ?></p>
+                                <p class="Book__Content-Price"><?php echo number_format($data->Giaban, 3, ",", ".") ?>đ</p>
+                            </div>
+                        </div>
+                    </a>
             <?php
-                        }
-                    } elseif (isset($_GET["search"])) {
-                        if ($pages == $i) {
-            ?>
-                <li class="page-item active"><a class="page-link" href="?pages=<?php echo $i ?>&search=<?php echo $_GET["search"] ?>"><?php echo $i ?></a></li>
-            <?php
-                        } else {
-            ?>
-                <li class="page-item"><a class="page-link" href="?pages=<?php echo $i ?>&search=<?php echo $_GET["search"] ?>"><?php echo $i ?></a></li>
-            <?php
-                        }
-                    } else {
-                        if ($pages == $i) {
-            ?>
-                <li class="page-item active"><a class="page-link" href="?pages=<?php echo $i ?>"><?php echo $i ?></a></li>
-            <?php
-                        } else {
-            ?>
-                <li class="page-item"><a class="page-link" href="?pages=<?php echo $i ?>"><?php echo $i ?></a></li>
-<?php }
-                    }
-                }
-
-                if ($pages < $TotalPage && $TotalPage > 1) {
-                    if (isset($_GET["chude"])) {
-                        echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages + 1) . '&chude=' . $_GET["chude"] . '">Next</a></li>';
-                    } elseif (isset($_GET["search"])) {
-                        echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages + 1) . '&chude=' . $_GET["search"] . '">Next</a></li>';
-                    } else {
-                        echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages + 1) . '">Next</a></li>';
-                    }
                 }
             }
-?>
-</ul>
-
-
-</div>
+            echo $paging->html();
+            ?>
+        </div>
+    </div>
 </div>
 @endsection

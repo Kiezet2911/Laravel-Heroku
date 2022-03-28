@@ -147,3 +147,65 @@ async function postimg(formData) {
     );
     return response.json();
 }
+
+async function Delete(url = "") {
+    let BookingApi = "https://bookingapiiiii.herokuapp.com/";
+    console.log(BookingApi + url);
+    const response = await fetch(BookingApi + url, {
+        method: "DELETE"
+    });
+
+    return response.json();
+}
+
+function Deletetacgia() {
+    let id = document.getElementsByTagName('select')[0].value
+    if (id == "--Chọn Tác Giả--") {
+        alert("Vui long chon tac gia");
+    } else {
+        if (confirm("Xóa Tác Giả Này Sẽ Xóa Những Sách Có Liên Quan\n Bạn Chắc Không")) {
+            Delete("tacgiabyid/" + id)
+                .then((result) => {
+                    console.log(result)
+                    alert("Xóa thành công");
+                    window.location.href = "/admin/setting";
+                })
+        }
+
+    }
+}
+function Deletechude() {
+    let id = document.getElementsByTagName('select')[1].value
+    if (id == "--Chọn chủ đề --") {
+        alert("Vui long chon tac gia");
+    } else {
+        if (confirm("Xóa Tác Giả Này Sẽ Xóa Những Sách Có Liên Quan\n Bạn Chắc Không")) {
+            Delete("chudebyid/" + id)
+                .then((result) => {
+                    console.log(result)
+                    alert("Xóa thành công");
+                    window.location.href = "/admin/setting";
+                })
+        }
+
+    }
+
+  
+}
+function DeleteNXB() {
+    let id = document.getElementsByTagName('select')[2].value
+    if (id == "--Chọn nhà xuất bản--") {
+        alert("Vui long chon tac gia");
+    } else {
+        if (confirm("Xóa Tác Giả Này Sẽ Xóa Những Sách Có Liên Quan\n Bạn Chắc Không")) {
+            Delete("nhaxuatbanbyid/" + id)
+                .then((result) => {
+                    console.log(result)
+                    alert("Xóa thành công");
+                    window.location.href = "/admin/setting";
+                })
+        }
+
+    }
+}
+

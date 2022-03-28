@@ -49,7 +49,14 @@ class AdminController extends Controller
                         'DienThoai' => $_POST['inputPhone']
                     ]));
                 }
-                return  view('admin_setting');
+
+                $data = json_decode(Http::get($url . "GETALL"), true);
+
+                $listTG = $data['tacgia'];
+                $listNXB = $data['NXB'];
+                $listChuDe = $data['chude'];
+             
+                return  view('admin_setting', compact('listTG', 'listNXB', 'listChuDe'));
             } else return view('admin_notAdmin');
         } else return view('admin_notAdmin');
     }

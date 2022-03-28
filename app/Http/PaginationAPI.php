@@ -9,6 +9,7 @@ class PaginationAPI
 {
     public $_config = array(
         'api'  => '', // Truyền Tham Số Để Nói Với api
+        'body'  => '', // Nếu body rỗng thì sẽ thực hiện Http::get không thì là post thì sẽ có body
         'current_page'  => 1, // Trang hiện tại       
         'total_page'    => 1, // Tổng số trang
         'limit'         => 10, // limit     
@@ -48,10 +49,7 @@ class PaginationAPI
         if ($this->_config['current_page'] < 1) {
             $this->_config['current_page'] = 1;
         }
-        /*
-         * Tính total page, công tức tính tổng số trang như sau: 
-         * total_page = ceil(count/limit). Đây là công thức tính trung bình thôi
-         */
+
         $pages = $this->_config['current_page'];
 
         $last = $this->_config['limit'];
@@ -59,21 +57,36 @@ class PaginationAPI
         $api =  $this->_config['api'];
 
         $data = json_decode(Http::get($url . "$api/$pages/$last"));
+        if (isset($this->_config['body']) && $this->_config['body'] != "") {
+            $value = [
+                "keyword" => $this->_config['body'],
+                "page" => $pages,
+                "limit" => $last
+            ];
 
-        $this->list = $data->data;
+            $data = json_decode(Http::post($url . "$api", $value));
+        }
+        if (!property_exists($data, 'data')) {
+            $this->list = null;
+        } else {
 
-        $this->_config['count'] = $data->count;
+            $this->list = $data->data;
 
-        $this->_config['total_page'] = ceil($this->_config['count'] / $this->_config['limit']);
+            $this->_config['count'] = $data->count;
+            /*
+         * Tính total page, công tức tính tổng số trang như sau: 
+         * total_page = ceil(count/limit). Đây là công thức tính trung bình thôi
+         */
+            $this->_config['total_page'] = ceil($this->_config['count'] / $this->_config['limit']);
 
-        /*
+            /*
          * Sau khi có tổng số trang ta kiểm tra xem nó có nhỏ hơn 0 hay không
          * nếu nhỏ hơn 0 thì gán nó băng 1 ngay. Vì mặc định tổng số trang luôn bằng 1
          */
-        if (!$this->_config['total_page']) {
-            $this->_config['total_page'] = 1;
-        }
-        /*
+            if (!$this->_config['total_page']) {
+                $this->_config['total_page'] = 1;
+            }
+            /*
          * Trang hiện tại sẽ rơi vào một trong các trường hợp sau:     
          *  - Nếu trang hiện tại người dùng truyền vào lớn hơn tổng số trang
          *    thì ta gán nó bằng tổng số trang
@@ -81,53 +94,53 @@ class PaginationAPI
          * thay đổi tham số trên url nhằm kiểm tra lỗi web của chúng ta
          */
 
-        if ($this->_config['current_page'] > $this->_config['total_page']) {
-            $this->_config['current_page'] = $this->_config['total_page'];
+            if ($this->_config['current_page'] > $this->_config['total_page']) {
+                $this->_config['current_page'] = $this->_config['total_page'];
 
-            $pages = $this->_config['current_page'];
+                $pages = $this->_config['current_page'];
 
-            $data = json_decode(Http::get($url . "$api/$pages/$last"));
+                $data = json_decode(Http::get($url . "$api/$pages/$last"));
 
-            $this->list = $data->data;
-        }
-
-
-        // Bây giờ ta tính số trang ta show ra trang web
-        // Trước tiên tính middle, đây chính là số nằm giữa trong khoảng tổng số trang
-        // mà bạn muốn hiển thị ra màn hình
-        $middle = ceil($this->_config['range'] / 2);
-
-        // Ta sẽ lâm vào các trường hợp như bên dưới
-        // Trong trường hợp tổng số trang mà bé hơn range
-        // thì ta show hết luôn, không cần tính toán làm gì
-        // tức là gán min = 1 và max = tổng số trang luôn
-        if ($this->_config['total_page'] < $this->_config['range']) {
-            $this->_config['min'] = 1;
-            $this->_config['max'] = $this->_config['total_page'];
-        }
-        // Trường hợp tổng số trang mà lớn hơn range
-        else {
-            // Ta sẽ gán min = current_page - middle + 1
-            $this->_config['min'] = $this->_config['current_page'] - $middle + 1;
-            // Ta sẽ gán max = current_page + middle - 1
-            $this->_config['max'] = $this->_config['current_page'] + $middle - 1;
-
-            // Sau khi tính min và max ta sẽ kiểm tra
-            // nếu min < 1 thì ta sẽ gán min = 1  và max bằng luôn range
-            if ($this->_config['min'] < 1) {
-                $this->_config['min'] = 1;
-                $this->_config['max'] = $this->_config['range'];
+                $this->list = $data->data;
             }
 
-            // Nếu max > tổng số trang
-            // ta gán max = tổng số trang và min = (tổng số trang - range) + 1 
-            else if ($this->_config['max'] > $this->_config['total_page']) {
+
+            // Bây giờ ta tính số trang ta show ra trang web
+            // Trước tiên tính middle, đây chính là số nằm giữa trong khoảng tổng số trang
+            // mà bạn muốn hiển thị ra màn hình
+            $middle = ceil($this->_config['range'] / 2);
+
+            // Ta sẽ lâm vào các trường hợp như bên dưới
+            // Trong trường hợp tổng số trang mà bé hơn range
+            // thì ta show hết luôn, không cần tính toán làm gì
+            // tức là gán min = 1 và max = tổng số trang luôn
+            if ($this->_config['total_page'] < $this->_config['range']) {
+                $this->_config['min'] = 1;
                 $this->_config['max'] = $this->_config['total_page'];
-                $this->_config['min'] = $this->_config['total_page'] - $this->_config['range'] + 1;
+            }
+            // Trường hợp tổng số trang mà lớn hơn range
+            else {
+                // Ta sẽ gán min = current_page - middle + 1
+                $this->_config['min'] = $this->_config['current_page'] - $middle + 1;
+                // Ta sẽ gán max = current_page + middle - 1
+                $this->_config['max'] = $this->_config['current_page'] + $middle - 1;
+
+                // Sau khi tính min và max ta sẽ kiểm tra
+                // nếu min < 1 thì ta sẽ gán min = 1  và max bằng luôn range
+                if ($this->_config['min'] < 1) {
+                    $this->_config['min'] = 1;
+                    $this->_config['max'] = $this->_config['range'];
+                }
+
+                // Nếu max > tổng số trang
+                // ta gán max = tổng số trang và min = (tổng số trang - range) + 1 
+                else if ($this->_config['max'] > $this->_config['total_page']) {
+                    $this->_config['max'] = $this->_config['total_page'];
+                    $this->_config['min'] = $this->_config['total_page'] - $this->_config['range'] + 1;
+                }
             }
         }
     }
-
     /*
      * Hàm Lấy Danh Sách Từ API
      */
@@ -154,34 +167,36 @@ class PaginationAPI
      */
     public function html()
     {
-        $p = '';
-        if ($this->_config['count'] > $this->_config['limit']) {
-            $p = '<ul  class="pagination" id="pagination">';
+        if (isset($this->_config['count'])) {
+            $p = '';
+            if ($this->_config['count'] > $this->_config['limit']) {
+                $p = '<ul  class="pagination" id="pagination">';
 
-            // Nút prev và first
-            if ($this->_config['current_page'] > 1) {
-                $p .= '<li  class="page-item"><a class="page-link"  href="' . $this->__link('1') . '">First</a></li>';
-                $p .= '<li  class="page-item"><a class="page-link"  href="' . $this->__link($this->_config['current_page'] - 1) . '">Prev</a></li>';
-            }
-
-            // lặp trong khoảng cách giữa min và max để hiển thị các nút
-            for ($i = $this->_config['min']; $i <= $this->_config['max']; $i++) {
-                // Trang hiện tại
-                if ($this->_config['current_page'] == $i) {
-                    $p .= '<li  class="page-item active"><a class="page-link" >' . $i . '</a></li>';
-                } else {
-                    $p .= '<li  class="page-item"><a class="page-link"  href="' . $this->__link($i) . '">' . $i . '</a></li>';
+                // Nút prev và first
+                if ($this->_config['current_page'] > 1) {
+                    $p .= '<li  class="page-item"><a class="page-link"  href="' . $this->__link('1') . '">First</a></li>';
+                    $p .= '<li  class="page-item"><a class="page-link"  href="' . $this->__link($this->_config['current_page'] - 1) . '">Prev</a></li>';
                 }
-            }
 
-            // Nút last và next
-            if ($this->_config['current_page'] < $this->_config['total_page']) {
-                $p .= '<li class="page-item"><a class="page-link"  href="' . $this->__link($this->_config['current_page'] + 1) . '">Next</a></li>';
-                $p .= '<li class="page-item"><a class="page-link"  href="' . $this->__link($this->_config['total_page']) . '">Last</a></li>';
-            }
+                // lặp trong khoảng cách giữa min và max để hiển thị các nút
+                for ($i = $this->_config['min']; $i <= $this->_config['max']; $i++) {
+                    // Trang hiện tại
+                    if ($this->_config['current_page'] == $i) {
+                        $p .= '<li  class="page-item active"><a class="page-link" >' . $i . '</a></li>';
+                    } else {
+                        $p .= '<li  class="page-item"><a class="page-link"  href="' . $this->__link($i) . '">' . $i . '</a></li>';
+                    }
+                }
 
-            $p .= '</ul>';
+                // Nút last và next
+                if ($this->_config['current_page'] < $this->_config['total_page']) {
+                    $p .= '<li class="page-item"><a class="page-link"  href="' . $this->__link($this->_config['current_page'] + 1) . '">Next</a></li>';
+                    $p .= '<li class="page-item"><a class="page-link"  href="' . $this->__link($this->_config['total_page']) . '">Last</a></li>';
+                }
+
+                $p .= '</ul>';
+            }
+            return $p;
         }
-        return $p;
     }
 }
