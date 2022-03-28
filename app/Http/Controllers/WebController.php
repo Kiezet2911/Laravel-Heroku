@@ -25,37 +25,8 @@ class WebController extends Controller
         $url = "https://bookingapiiiii.herokuapp.com/";
 
         $chude = json_decode(Http::get($url . 'chude'), true);
-        $search = $req->input('search');
         return view('products', ['chude' => $chude]);
     }
-
-    public static function getlist($pages, $last)
-    {
-        $url = "https://bookingapiiiii.herokuapp.com/PhanTrang/" . $pages . "/" . $last;
-        //
-        if (isset($_GET["chude"])) {
-            //
-            $url = "https://bookingapiiiii.herokuapp.com/PhanTrangChuDe/" . $_GET["chude"] . "/" . $pages . "/" . $last;
-
-            //
-        } elseif (isset($_GET["search"])) {
-            //
-            $url = "https://bookingapiiiii.herokuapp.com/PhanTrangSearch";
-            //
-            $book = json_decode(Http::post($url, [
-                "keyword" => $_GET["search"],
-                "page" => $pages,
-                "limit" => $last
-            ]), true);
-            //
-            return $book;
-        }
-        //
-        $book = json_decode(Http::get($url), true);
-        //      
-        return $book;
-    }
-
     public static function ifEmptyCart()
     {
         return true;

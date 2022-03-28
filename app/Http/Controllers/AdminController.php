@@ -55,7 +55,7 @@ class AdminController extends Controller
                 $listTG = $data['tacgia'];
                 $listNXB = $data['NXB'];
                 $listChuDe = $data['chude'];
-             
+
                 return  view('admin_setting', compact('listTG', 'listNXB', 'listChuDe'));
             } else return view('admin_notAdmin');
         } else return view('admin_notAdmin');
@@ -74,21 +74,7 @@ class AdminController extends Controller
     {
         if (isset($req->session()->get("UserLogin")["Role"])) {
             if ($req->session()->get("UserLogin")["Role"] == true) {
-                $last = 3;
-                $pages = 1;
-
-                if (isset($_GET["pages"])) {
-                    if ($_GET["pages"] <= 0) {
-                        $pages = 1;
-                    } else {
-                        $pages = $_GET["pages"];
-                    }
-                }
-                $url = "https://bookingapiiiii.herokuapp.com/";
-                $role = "false";
-                $list = json_decode(Http::get($url . 'khachhangforadmin/' . $role . "/" . $pages . "/" . $last), true);
-
-                return view('admin_account', ['list' => $list, 'pages' => $pages, 'last' => $last]);
+                return view('admin_account');
             } else return view('admin_notAdmin');
         } else return view('admin_notAdmin');
     }

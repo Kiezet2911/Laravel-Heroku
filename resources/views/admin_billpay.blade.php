@@ -23,7 +23,7 @@
         'limit'         => 2, // limit
         'link_full'     => '?pages={page}', // Link full có dạng như sau: domain/com/page/{page}
         'link_first'    => '/admin/bill-pay', // Link trang đầu tiên
-        'range'         => 5 // Số button trang bạn muốn hiển thị 
+        'range'         => 3 // Số button trang bạn muốn hiển thị 
     );
 
     $paging = new Pagination();

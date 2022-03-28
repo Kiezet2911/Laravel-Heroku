@@ -16,7 +16,25 @@
 
     <?php
 
-    if (!array_key_exists('data', $list)) {
+    use App\Http\PaginationAPI;
+    //Lấy Danh Sách Sản Phẩm
+
+    $config = array(
+        'api'  => "khachhangforadmin/false",
+        'current_page'  => isset($_GET['pages']) ? $_GET['pages'] : 1, // Trang hiện tại          
+        'limit'         => 4, // limit
+        'link_full'     => '?pages={page}', // Link full có dạng như sau: domain/com/page/{page}
+        'link_first'    => '/admin/account-manager', // Link trang đầu tiên
+        'range'         => 3 // Số button trang bạn muốn hiển thị 
+    );
+
+    $paging = new PaginationAPI();
+
+    $paging->init($config);
+
+    $list = $paging->Getlist();
+
+    if ($list == null) {
     ?>
         <div class='Admin__Account-Empty'>
             <div class='Admin__Account-Empty-image'>
@@ -24,78 +42,40 @@
             </div>
             <span>Hiện Không Có Tài Khoản Nào Được Đăng Ký</span>
         </div>
-    <?php
-    } else if ($list['data'] == null) {
 
-    ?>
-        <div class='Admin__Account-Empty'>
-            <div class='Admin__Account-Empty-image'>
-                <img src='https://i.pinimg.com/originals/ec/0c/0c/ec0c0c652f7a9fb965bf08f45c4403fe.gif' alt=''>
-            </div>
-            <span>Hiện Không Có Tài Khoản Nào Ở Trang Này</span>
-        </div>
-        <?php
 
-    } else {
-        $total = $list['count'];
-
-        foreach ($list['data'] as $user) {
-
+        <?php } else {
+        foreach ($list as $user) {
         ?>
             <div class="Admin__Account-Account-Details">
                 <div class="Checkbox__Account">
-                    <input type="checkbox" name="" onclick="SetRole('<?php echo $user['_id'] ?>')" class="checkbox" id="checkbox__account">
+                    <input type="checkbox" name="" onclick="SetRole('<?php echo $user->_id ?>')" class="checkbox" id="checkbox__account">
                 </div>
 
-                <div class="User__username"><?php echo $user['Taikhoan'] ?></div>
+                <div class="User__username"><?php echo $user->Taikhoan ?></div>
 
                 <?php
-                if (isset($user['Email'])) echo "<div class='User__email' >{$user['Email']}</div>";
+                if (isset($user->Email)) echo "<div class='User__email' >{$user->Email}</div>";
                 else echo "<div class='User__email' >Chưa Cập Nhật</div>";
                 ?>
 
                 <?php
-                if ($user['Role'] == true) echo "<div class='User__role' >Admin</div>";
+                if ($user->Role == true) echo "<div class='User__role' >Admin</div>";
                 else { ?>
                     <div class='User__role'>Khách</div>
 
                     <div class='User__setting'>
-                        <div class='User__setting-deleteAccount' onclick="showDialogDeleteAccount('<?php echo $user['_id'] ?>','<?php echo $user['Role'] ?>')">
+                        <div class='User__setting-deleteAccount' onclick="showDialogDeleteAccount('<?php echo $user->_id ?>','<?php echo $user->Role ?>')">
                             Xóa Tài Khoản
                         </div>
                     </div>
                 <?php    }
                 ?>
             </div>
-        <?php }
-        ?>
-        <ul class="pagination" id="pagination">
-            <?php
-            $TotalPage = ceil($total / $last);
-
-            if ($pages > 1 && $TotalPage > 1) {
-                echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages - 1) . '">Prev</a></li>';
-            }
-            //Lap so pages
-            for ($i = 1; $i <= $TotalPage; $i++) {
-                if ($pages == $i) {
-            ?>
-                    <li class="page-item active"><a class="page-link" href="?pages=<?php echo $i ?>"><?php echo $i ?></a></li>
-                <?php
-                } else {
-                ?>
-                    <li class="page-item"><a class="page-link" href="?pages=<?php echo $i ?>"><?php echo $i ?></a></li>
-            <?php }
-            }
-
-            if ($pages < $TotalPage && $TotalPage > 1) {
-                echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages + 1) . '">Next</a></li>';
-            }
-            ?>
-
-        </ul>
-    <?php
-    } ?>
+    <?php }
+        echo $paging->html();
+    }
+    ?>
 
 
 
