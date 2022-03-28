@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Redirect;
 
 class Acc extends Controller
 {
@@ -21,7 +19,7 @@ class Acc extends Controller
             ]);
             $req->session()->put('UserLogin', $data);
             if (isset($data['id'])) {
-                return Redirect('');
+                return redirect('');
             } else {
                 return view('signin', ['mess', $data['Messenger']]);
             }
@@ -43,7 +41,7 @@ class Acc extends Controller
             ]);
             $req->session()->put('UserLogin', $data);
             if (isset($data['id'])) {
-                return Redirect('');
+                return redirect('');
             }
             return view('signup');
         }

@@ -13,6 +13,29 @@
 <div class="Admin__Storage-Body">
     <?php
 
+    use App\Http\Pagination;
+    use Illuminate\Support\Facades\Http;
+
+    $url = "https://bookingapiiiii.herokuapp.com/";
+
+    $listcount = json_decode(Http::get($url . 'sach'), true);
+    $config = array(
+        'current_page'  => isset($_GET['pages']) ? $_GET['pages'] : 1, // Trang hiện tại
+        'count'  => count($listcount), // Tổng số record
+        'limit'         => 2, // limit
+        'link_full'     => '?pages={page}', // Link full có dạng như sau: domain/com/page/{page}
+        'link_first'    => '/admin/storage-products', // Link trang đầu tiên
+        'range'         => 5 // Số button trang bạn muốn hiển thị 
+    );
+
+    $paging = new Pagination();
+
+    $paging->init($config);
+
+    $pages = $paging->_config['current_page'];
+
+    $list = json_decode(Http::get($url . "sachpagination/$pages/2"), true);
+
     if ($list == null) {
     ?>
         <div class='Cart__Products-Empty'>
@@ -40,33 +63,8 @@
                 </div>
             </div>
     <?php }
+        echo $paging->html();
     } ?>
-
-    <ul class="pagination" id="pagination">
-        <?php
-        //Button Number pages       
-        $TotalPage = ceil($total / $last);
-        if ($pages > 1 && $TotalPage > 1) {
-            echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages - 1) . '">Prev</a></li>';
-        }
-        //Lap so pages
-        for ($i = 1; $i <= $TotalPage; $i++) {
-            if ($pages == $i) {
-        ?>
-                <li class="page-item active"><a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
-                </li>
-            <?php
-            } else {
-            ?>
-                <li class="page-item"><a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a>
-                </li>
-        <?php }
-        }
-        if ($pages < $TotalPage && $TotalPage > 1) {
-            echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages + 1) . '">Next</a></li>';
-        }
-        ?>
-    </ul>
 
 
 </div>

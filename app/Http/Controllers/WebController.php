@@ -4,11 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Redirect;
-use PhpParser\Node\Expr\Cast\Double;
-
-use function PHPUnit\Framework\isEmpty;
 
 class WebController extends Controller
 {
@@ -61,13 +56,13 @@ class WebController extends Controller
         return $book;
     }
 
-    public static function ifEmptyCart(Request $req)
+    public static function ifEmptyCart()
     {
         return true;
     }
 
 
-    function details(Request $req)
+    function details()
     {
         $id = "";
         $url = "https://bookingapiiiii.herokuapp.com/";
@@ -197,7 +192,7 @@ class WebController extends Controller
             }
         }
 
-        return Redirect('cart');
+        return redirect('cart');
     }
 
     function cart(Request $req)
@@ -238,9 +233,9 @@ class WebController extends Controller
                 $data = Http::get('https://bookingapiiiii.herokuapp.com/khachhangbyid/' . $id);
 
 
-                return Redirect('cart');
-            } else return Redirect('cart');
-        } else return Redirect('cart');
+                return redirect('cart');
+            } else return redirect('cart');
+        } else return redirect('cart');
     }
 
     function minusCountItem(Request $req)
@@ -270,9 +265,9 @@ class WebController extends Controller
                 $data = Http::get('https://bookingapiiiii.herokuapp.com/khachhangbyid/' . $id);
 
 
-                return Redirect('cart');
-            } else return Redirect('cart');
-        } else return Redirect('cart');
+                return redirect('cart');
+            } else return redirect('cart');
+        } else return redirect('cart');
     }
 
 
@@ -282,32 +277,7 @@ class WebController extends Controller
         if ($req->session()->has('UserLogin')) {
 
             if (isset($req->session()->get('UserLogin')['id'])) {
-                $id = $req->session()->get('UserLogin')['id'];
-                $last = 3;
-                $pages = 1;
-
-                if (isset($_GET["pages"])) {
-                    if (intval($_GET["pages"]) == 0) {
-                        $pages = 1;
-                    } else if ($_GET["pages"] <= 0) {
-                        $pages = 1;
-                    } else {
-                        $pages = intval($_GET["pages"]);
-                    }
-                }              
-                $data = json_decode(Http::get($url . "DonHangbyidKH/$id/$pages/$last"));
-                $listHistoryPay = $data->data;
-                //Nhận Tổng Đơn Hàng Từ Respone
-                $count = $data->count;
-                //Tính Tổng Số Page Sẽ Hiển Thị Bằng Celi      
-                $TotalPage = ceil($count / $last);
-                if ($pages > $TotalPage) {
-                    $pages = $TotalPage;
-                    $data = json_decode(Http::get($url . "DonHangbyidKH/$id/$pages/$last"));
-                    $listHistoryPay = $data->data;
-                }
-
-                return view('historypay', compact('listHistoryPay', 'pages', 'TotalPage'));
+                return view('historypay');
             } else {
                 return view('notlogin');
             }

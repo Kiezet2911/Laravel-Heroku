@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Http\Pagination;
 
 
 class AdminController extends Controller
@@ -57,30 +58,7 @@ class AdminController extends Controller
     {
         if (isset($req->session()->get("UserLogin")["Role"])) {
             if ($req->session()->get("UserLogin")["Role"] == true) {
-                $last = 2;
-                $pages = 1;
-
-                if (isset($_GET["pages"])) {
-                    if ($_GET["pages"] <= 0) {
-                        $pages = 1;
-                    } else {
-                        $pages = $_GET["pages"];
-                    }
-                }
-
-                $url = "https://bookingapiiiii.herokuapp.com/";
-                $listcount = json_decode(Http::get($url . 'sach'), true);
-                $TotalPage = ceil(count($listcount) / $last);
-                if ($pages > $TotalPage) {
-                    $pages = $TotalPage;
-                }
-                $list = json_decode(Http::get($url . 'sachpagination/' . $pages . "/" . $last), true);
-                if ($listcount == null) {
-                    $total = 0;
-                } else {
-                    $total = count($listcount);
-                }
-                return view('admin_storage', ['list' => $list, 'total' =>   $total, 'pages' => $pages, 'last' => $last]);
+                return view('admin_storage');
             } else return view('admin_notAdmin');
         } else return view('admin_notAdmin');
     }
@@ -120,30 +98,7 @@ class AdminController extends Controller
     {
         if (isset($req->session()->get("UserLogin")["Role"])) {
             if ($req->session()->get("UserLogin")["Role"] == true) {
-                $last = 3;
-                $pages = 1;
-
-                if (isset($_GET["pages"])) {
-                    if ($_GET["pages"] <= 0) {
-                        $pages = 1;
-                    } else {
-                        $pages = $_GET["pages"];
-                    }
-                }
-                $url = "https://bookingapiiiii.herokuapp.com/";
-                $listcount = json_decode(Http::get($url . 'DonHang'), true);
-                $TotalPage = ceil(count($listcount) / $last);
-                if ($pages > $TotalPage) {
-                    $pages = $TotalPage;
-                }
-                $list = json_decode(Http::get($url . 'DonHang/' . $pages . "/" . $last), true);
-                if ($listcount == null) {
-                    $total = 0;
-                } else {
-                    $total = count($listcount);
-                }
-
-                return view('admin_billpay', ['list' => $list, 'total' => $total, 'pages' => $pages, 'last' => $last]);
+                return view('admin_billpay');
             } else return view('admin_notAdmin');
         } else return view('admin_notAdmin');
     }

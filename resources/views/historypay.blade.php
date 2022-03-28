@@ -20,6 +20,26 @@
     </div>
     <div class="HistoryPay__Body">
         <?php
+
+        use App\Http\PaginationAPI;
+
+        $id = session()->get('UserLogin')['id'];
+
+        $config = array(
+            'api'  => "DonHangbyidKH/$id",
+            'current_page'  => isset($_GET['pages']) ? $_GET['pages'] : 1, // Trang hiện tại          
+            'limit'         => 2, // limit
+            'link_full'     => '?pages={page}', // Link full có dạng như sau: domain/com/page/{page}
+            'link_first'    => '/history-pay', // Link trang đầu tiên
+            'range'         => 5 // Số button trang bạn muốn hiển thị 
+        );
+
+        $paging = new PaginationAPI();
+
+        $paging->init($config);
+
+        $listHistoryPay = $paging->Getlist();
+
         if ($listHistoryPay == null) {
         ?>
             <div class='Cart__Products-Empty'>
@@ -55,32 +75,8 @@
 
                 </div>
 
-            <?php }
-            ?>
-            <ul class="pagination" id="pagination">
-                <?php
-
-                if ($pages > 1 && $TotalPage > 1) {
-                    echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages - 1) . '">Prev</a></li>';
-                }
-                //Lap so pages
-                for ($i = 1; $i <= $TotalPage; $i++) {
-                    if ($pages == $i) {
-                ?>
-                        <li class="page-item active"><a class="page-link" href="?pages=<?php echo $i ?>"><?php echo $i ?></a></li>
-                    <?php
-                    } else {
-                    ?>
-                        <li class="page-item"><a class="page-link" href="?pages=<?php echo $i ?>"><?php echo $i ?></a></li>
-                <?php }
-                }
-                if ($pages < $TotalPage && $TotalPage > 1) {
-                    echo '  <li class="page-item"><a class="page-link" href="?pages=' . ($pages + 1) . '">Next</a></li>';
-                }
-                ?>
-            </ul>
-
-        <?php
+        <?php }
+            echo $paging->html();
         } ?>
 
     </div>
