@@ -105,10 +105,14 @@
 .Bill__Setting{
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   flex-basis: 30%;
 }
 .User__setting-deleteAccount{
 	width: fit-content;
+  }
+  .Bill__Setting-details{
+	margin-right: 10px;
   }
 .Bill__Setting-details,
 .User__setting-deleteAccount,
@@ -487,6 +491,15 @@
 			width: 200px;
 			height: 200px;
 		}
+		.Bill__Setting-status{
+			display: flex;
+			justify-content: center;
+			margin-right: 10px;
+		  }
+		  .Bill__Setting-status select{
+			width: 100px;
+			padding: 5px;
+		  }
 /* Responsive */
 @media screen and (max-width: 415px) {
 	.Admin__Container {
@@ -495,7 +508,7 @@
 	.Body__Container {
 		width: 95%;
 	}
-	.Title__email, .Title__role, .User__email, .Bill__DatePay {
+	.Title__email, .Title__DatePay,.User__email, .Bill__DatePay {
 		display: none;
 	}
 	.Title__infoPay {
@@ -516,6 +529,22 @@
 			.Center h1 span{
 				font-size: 20px;
 			}
+	.Bill__Setting-status select{
+		padding: 5px;
+		margin-top: 10px;
+		width: 70px;
+		}
+	.Title__role,
+	.User__role{
+		flex-basis: 30%;
+	}
+	.Title__BillID,
+	.Bill__BillID{
+		flex-basis: 55%;
+	}
+	.User__setting-deleteAccount{
+		padding: 5px;
+	}
 }
 
 .checkbox {

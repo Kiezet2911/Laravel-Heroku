@@ -79,7 +79,7 @@
 
 
 
-    <div onclick="CapQuyenAdmin()" class="UpdateAll__Setting">
+    <div onclick="CapQuyenAdmin()" class="UpdateAll__Setting" id="UpdateAll__Setting">
         Cấp Quyền Admin
     </div>
 </div>

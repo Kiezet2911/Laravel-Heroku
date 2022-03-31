@@ -16,9 +16,9 @@
                 <input type="text" name="search" class="form-control" placeholder="Search..." />
                 <div class="Product__ListProduct-SortArea">
                     <h5>Sắp xếp theo:</h5>
-                    <select class="form-select" aria-label="-- Loại Sắp Xếp --">
-                        <option selected>Giá Tăng Dần</option>
-                        <option value="1">Giá Giảm Dần</option>
+                    <select name="sort" class="form-select" aria-label="-- Loại Sắp Xếp --">
+                        <option value="increase" selected>Giá Tăng Dần</option>
+                        <option value="decrease">Giá Giảm Dần</option>
                     </select>
                 </div>
             </div>
@@ -93,9 +93,9 @@
             <?php
                 }
             }
-            echo $paging->html();
             ?>
         </div>
+        <?php    echo $paging->html(); ?>
     </div>
 </div>
 @endsection

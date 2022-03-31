@@ -45,8 +45,8 @@ class PaginationAPI
         if ($this->_config['limit'] < 0) {
             $this->_config['limit'] = 0;
         }
-        //  - Nếu người dùng truyền vào số trang nhỏ hơn 1 thì ta sẽ gán nó = 1 
-        if ($this->_config['current_page'] < 1) {
+        //  - Nếu người dùng truyền vào số trang nhỏ hơn 1 thì ta sẽ gán nó = 1       
+        if ($this->_config['current_page'] < 1 && intval($this->_config['current_page']) == 0) {
             $this->_config['current_page'] = 1;
         }
 

@@ -68,7 +68,7 @@ class Pagination
          * Đây là vấn đề giúp web chạy trơn tru hơn, vì đôi khi người dùng cố ý
          * thay đổi tham số trên url nhằm kiểm tra lỗi web của chúng ta
          */
-        if ($this->_config['current_page'] < 1) {
+        if ($this->_config['current_page'] < 1 && intval($this->_config['current_page']) == 0) {
             $this->_config['current_page'] = 1;
         }
 

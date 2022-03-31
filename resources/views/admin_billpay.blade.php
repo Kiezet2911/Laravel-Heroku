@@ -4,7 +4,7 @@
 
     <div class="Title__BillID">Mã Đơn</div>
     <div class="Title__Username">Tên Khách</div>
-    <div class="Title__role">Thời Gian Đặt</div>
+    <div class="Title__DatePay">Thời Gian Đặt</div>
 
     <div class="Title__Setting">Thiết Lập</div>
 </div>
@@ -54,6 +54,12 @@
                 <div class="Bill__Setting">
                     <div class="Bill__Setting-details" onclick="showDialog('<?php echo $bill['id'] ?>','<?php echo date('j \\ F Y', strtotime($bill['Ngaydat'])) ?>','<?php echo $bill['TongTien'] ?>','<?php echo $bill['Tinhtranggiaohang'] ?>')">Chi
                         Tiết</div>
+                        <div class="Bill__Setting-status">
+                            <select id="Setting__Status" onchange="">
+                                <option value="false">Chưa Giao</option>
+                                <option value="true">Đã Giao</option>
+                            </select>
+                        </div>
                 </div>
             </div>
     <?php }

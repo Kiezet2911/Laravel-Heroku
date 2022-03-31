@@ -5,7 +5,7 @@
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100">
-            <form class="login100-form validate-form" action="{{url('signin')}}" method="POST">
+            <form class="login100-form validate-form" action="signin" method="POST">
                 @csrf
                 <span class="login100-form-title p-b-43">
                     <ion-icon name="book-outline"></ion-icon>Mbook

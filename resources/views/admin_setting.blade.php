@@ -15,7 +15,7 @@
                     <div>Banner 1</div>
                     <input type="file" name="Banner1" id="Banner1" onchange="loadimg(event)" accept="image/*">
                 </div>
-                <img id="banner1" src="" alt="banner1">
+                <img id="banner1" src="">
             </div>
             <button type="submit" class="Setting__Banner-Feature-Btn">
                 Cập Nhật
@@ -27,7 +27,7 @@
                     <div>Banner 2</div>
                     <input type="file" name="Banner2" id="Banner2" onchange="loadimg2(event)">
                 </div>
-                <img id="banner2" src="#" alt="">
+                <img id="banner2" src="" alt="">
             </div>
             <button type="submit" class="Setting__Banner-Feature-Btn">
                 Cập Nhật
