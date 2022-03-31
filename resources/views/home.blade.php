@@ -100,9 +100,9 @@
                     <div class="Good__Book-body">
                         {{$sach["Mota"]}}
                     </div>
-                    <div class="Good__Book-readnow" href="/details?id={{$sach['id']}}">
+                    <a class="Good__Book-readnow" href="/details?id={{$sach['id']}}">
                         Đọc Ngay
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
