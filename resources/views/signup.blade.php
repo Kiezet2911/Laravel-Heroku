@@ -9,7 +9,9 @@
                 <span class="login100-form-title p-b-43">
                     <ion-icon name="book-outline"></ion-icon>Mbook
                 </span>
-
+                <?php if (isset($mess)) : ?>
+                    <h1>{{ $mess }}</h1>
+                <?php endif; ?>
                 <div class="wrap-input100 validate-input">
                     <input class="input100" type="text" name="fullname" required>
                     <span class="focus-input100"></span>

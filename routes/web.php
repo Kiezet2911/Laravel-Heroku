@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Acc;
 use App\Http\Controllers\WebController;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\App;
 use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +41,7 @@ Route::get('/logout', function () {
         session()->remove('UserLogin');
         session()->remove("idbookforcart");
     }
-    return  App::call('App\Http\Controllers\WebController@index');
+    return  redirect('');
 });
 
 Route::post('signup', [Acc::class, 'signup'])->name('signup');
@@ -65,23 +64,23 @@ Route::get('/profile', function () {
 Route::view('/products', 'products');
 Route::get('/products', [WebController::class, 'product'])->name('product');
 
-
+//Giỏ Hàng
 Route::view('/cart', 'cart');
 Route::get('/cart', [WebController::class, 'cart']);
 Route::get('/CreateCart', [WebController::class, 'CreateCart']);
 Route::get('plusCountItem', [WebController::class, 'plusCountItem']);
 Route::get('minusCountItem', [WebController::class, 'minusCountItem']);
 
+//Lịch sử Mua Hàng Của User
 Route::get('history-pay', [WebController::class, 'HistoryPay']);
 Route::get('CTBill/{idBill}/{date}/{money}/{TT}', [WebController::class, 'CTBill']);
 
 
-
+//Thông Tin Chi Tiết Của Sách
 Route::view('/details', 'details');
 Route::get('/details', [WebController::class, 'details']);
 
 
-//Admin's Route
 //Admin's Route
 Route::prefix('admin')->group(function () {
     Route::get('', [AdminController::class, 'AdminIndex']);

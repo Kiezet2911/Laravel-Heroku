@@ -21,7 +21,7 @@ class Acc extends Controller
             if (isset($data['id'])) {
                 return redirect('');
             } else {
-                return view('signin', ['mess', $data['Messenger']]);
+                return view('signin', ['mess' => $data['Messenger']]);
             }
         }
     }
@@ -42,8 +42,8 @@ class Acc extends Controller
             $req->session()->put('UserLogin', $data);
             if (isset($data['id'])) {
                 return redirect('');
-            }
-            return view('signup');
+            }        
+            return view('signup', ['mess' => $data['Messenger']]);
         }
     }
 }
