@@ -95,7 +95,15 @@ class AdminController extends Controller
             } else return view('admin_notAdmin');
         } else return view('admin_notAdmin');
     }
-
+    function ChangeStatusBill(Request $req, $id)
+    {
+        $url = "https://bookingapiiiii.herokuapp.com/DonHang";
+        Http::put($url, [
+            'id' => $id,
+            'Tinhtranggiaohang' => true
+        ]);
+        return null;
+    }
     function AdminAddNewBook(Request $req)
     {
         if (isset($req->session()->get("UserLogin")["Role"])) {

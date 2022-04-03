@@ -1,15 +1,15 @@
 @extends('admin')
 @section('admincontent')
-<div class="Admin__HistoryPay-Header">
+    <div class="Admin__HistoryPay-Header">
 
-    <div class="Title__BillID">Mã Đơn</div>
-    <div class="Title__Username">Tên Khách</div>
-    <div class="Title__DatePay">Thời Gian Đặt</div>
+        <div class="Title__BillID">Mã Đơn</div>
+        <div class="Title__Username">Tên Khách</div>
+        <div class="Title__DatePay">Thời Gian Đặt</div>
 
-    <div class="Title__Setting">Thiết Lập</div>
-</div>
-<div class="Admin__HistoryPay-Body">
-    <?php
+        <div class="Title__Setting">Thiết Lập</div>
+    </div>
+    <div class="Admin__HistoryPay-Body">
+        <?php
 
     use App\Http\Pagination;
     use Illuminate\Support\Facades\Http;
@@ -45,26 +45,47 @@
     } else {
         foreach ($list as $bill) {
         ?>
-            <div class="Admin__HistoryPay-Details">
+        <div class="Admin__HistoryPay-Details">
 
-                <div class="Bill__BillID"><?php echo $bill['id'] ?></div>
-                <div class="Bill__Username"><?php echo $bill['HoTen'] ?></div>
-                <div class="Bill__DatePay"><?php echo date('j \\ F Y', strtotime($bill['Ngaydat'])) ?></div>
+            <div class="Bill__BillID"><?php echo $bill['id']; ?></div>
+            <div class="Bill__Username"><?php echo $bill['HoTen']; ?></div>
+            <div class="Bill__DatePay"><?php echo date('j \\ F Y', strtotime($bill['Ngaydat'])); ?></div>
 
-                <div class="Bill__Setting">
-                    <div class="Bill__Setting-details" onclick="showDialog('<?php echo $bill['id'] ?>','<?php echo date('j \\ F Y', strtotime($bill['Ngaydat'])) ?>','<?php echo $bill['TongTien'] ?>','<?php echo $bill['Tinhtranggiaohang'] ?>')">Chi
-                        Tiết</div>
-                        <div class="Bill__Setting-status">
-                            <select id="Setting__Status" onchange="">
-                                <option value="false">Chưa Giao</option>
-                                <option value="true">Đã Giao</option>
-                            </select>
-                        </div>
+            <div class="Bill__Setting">
+                <div class="Bill__Setting-details"
+                    onclick="showDialog('<?php echo $bill['id']; ?>','<?php echo date('j \\ F Y', strtotime($bill['Ngaydat'])); ?>','<?php echo $bill['TongTien']; ?>','<?php echo $bill['Tinhtranggiaohang']; ?>')">
+                    Chi
+                    Tiết</div>
+                <div class="Bill__Setting-status">
+                    <?php if($bill['Tinhtranggiaohang'] == true){ ?>
+                    <div class="Status" style="color: rgba(10, 103, 10); font-weight: 700;">
+                        Đã Giao Hàng
+                    </div>
+                    <?php }else{ ?>
+                    <select id="Setting__Status" onchange="changeStatusBill('<?php echo $bill['id']; ?>')">
+                        <option selected hidden value="false">Chưa Giao</option>
+                        <option value="true">Đã Giao</option>
+                    </select>
+                    <?php } ?>
                 </div>
             </div>
-    <?php }
+        </div>
+        <?php }
         echo $paging->html();
     }
     ?>
-</div>
+    </div>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        function changeStatusBill(id) {
+            $.ajax({
+                url: "/admin/change-bill-pay/" + id,
+                type: "GET",
+                success: () => {
+                    document.getElementsByTagName('select').selectedIndex = "0";
+                    location.reload();
+                }
+            })
+        }
+    </script>
 @endsection

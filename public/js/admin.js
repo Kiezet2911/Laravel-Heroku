@@ -80,6 +80,38 @@ function submitFormprofile(e) {
     }
 }
 
+//update bill
+function comboxBill(id) {
+    let tinhtrang = document.getElementById("Setting__Status").value;
+    let check = [];
+    check.push(tinhtrang != null);
+
+    if (check.every((va) => va === true)) {
+        let body =
+            '{"id":"' +
+            id +
+            '","Giaban":' +
+            dongia +
+            ',"Soluongton":' +
+            ton +
+            "}";
+        put("sach", body)
+            .then((res) => {
+                if (res._id != null) {
+                    alert("Cập Nhật Thành Công");
+                    window.location.href = "/admin/storage-products";
+                } else {
+                    alert("Đã Xảy Ra Lỗi");
+                }
+            })
+            .catch((err) => {
+                alert(err);
+            });
+    } else {
+        alert("Vui Lòng Nhập Lại");
+    }
+}
+
 async function getData(url = "") {
     let BookingApi = "https://bookingapiiiii.herokuapp.com/";
     const response = await fetch(BookingApi + url, {
