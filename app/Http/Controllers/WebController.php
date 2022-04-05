@@ -41,8 +41,10 @@ class WebController extends Controller
             $id =   $_GET['id'];
             $url =  $url . "sachbyid/" . $id;
         }
-        $bookdetails = json_decode(Http::get($url), true);
-        return view('details', ['details' => $bookdetails]);
+        $data = json_decode(Http::get($url), true);
+        $bookdetails = $data['data'];
+        $BookLienQuan = $data['BookLienQuan'];     
+        return view('details', compact('bookdetails', 'BookLienQuan'));
     }
 
     function CreateCart(Request $req)
@@ -69,7 +71,10 @@ class WebController extends Controller
                 foreach ($arr as $item) {
 
                     if ($item['id'] == $itemCart['id']) {
-                        $item['count'] += 1;
+
+                        $item['count'] = $item['count'] + 1;
+                        $index = array_search($item,$arr);
+                        $arr[$index] = $item;
                         $req->session()->put("idbookforcart", $arr);
                         break;
                     }

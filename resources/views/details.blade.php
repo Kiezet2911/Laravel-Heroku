@@ -5,7 +5,7 @@
 <body>
     <div class="Details__container">
         <?php
-        foreach ($details as $bk) {
+        foreach ($bookdetails as $bk) {
         ?>
             <div class="Book__details">
                 <div class="Book__image">

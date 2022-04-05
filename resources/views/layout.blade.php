@@ -97,7 +97,6 @@
 
 
 
-
     @yield('content')
 
     <div class="Footer">
