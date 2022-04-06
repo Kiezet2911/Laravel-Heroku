@@ -2,7 +2,6 @@
 
 @section('content')
 
-<body>
     <div class="Details__container">
         <?php
         foreach ($bookdetails as $bk) {
@@ -64,5 +63,20 @@
             </div>
         <?php } ?>
     </div>
-</body>
+    <div class="SameCategoryBooksTitle">Sách liên quan</div>
+	<div class="samecategorySlide">
+		@foreach ($BookLienQuan as $item)
+            <a style="width: fit-content; text-decoration: none; color: black;" href="details?id={{$item['_id']}}">            
+                <div class="SameCategoryBook">
+                    <div class="SameCategoryBook__Img">
+                        <img src="{{$item['Anhbia']}}" alt="">
+                    </div>
+                    <div class="SameCategoryBook__Content">
+                        <div class="SameCategoryBook__TitleBook">{{$item['Tensach']}}</div>
+                        <div class="SameCategoryBook__Price"><?php echo number_format($item['Giaban'], 3, '.', ''); ?>đ</div>
+                    </div>
+                </div>
+            </a>
+        @endforeach
+	</div>
 @endsection

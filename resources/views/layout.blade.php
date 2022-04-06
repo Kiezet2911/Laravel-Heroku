@@ -21,6 +21,11 @@
     <link rel="stylesheet" href="/css/user/historypay.css">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Slick Slider CSS -->
+<link rel="stylesheet" type="text/css" href="slick/slick.css" />
+<link rel="stylesheet" type="text/css" href="slick/slick-theme.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
     <!-- Boostrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
@@ -152,6 +157,54 @@
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="/js/historyPay.js"></script>
+
+    <script>
+		$(document).ready(function() {
+			$('.samecategorySlide').slick({
+				slidesToShow: 5,
+				slidesToScroll: 1,
+				autoplay: true,
+		        infinite: true,
+				arrows: true,
+				autoplaySpeed: 2000,
+				prevArrow: '<button type="button" class="slick-prev slick-arrow"><ion-icon name="arrow-back-outline"></ion-icon></button>',
+				nextArrow: '<button type="button" class="slick-next slick-arrow"><ion-icon name="arrow-forward-outline"></ion-icon></button>',
+				responsive: [
+				    {
+				      breakpoint: 1024,
+				      settings: {
+				        slidesToShow: 3,
+				        slidesToScroll: 3,
+				      }
+				    },
+				    {
+				      breakpoint: 600,
+				      settings: {
+				        slidesToShow: 2,
+				        slidesToScroll: 2,
+				      }
+				    },
+				    {
+				      breakpoint: 480,
+				      settings: {
+				        slidesToShow: 2,
+				        slidesToScroll: 1,
+				      }
+				    }
+				    // You can unslick at a given breakpoint now by adding:
+				    // settings: "unslick"
+				    // instead of a settings object
+				  ]
+			});
+		});
+	</script>
+        <script type="text/javascript"
+        src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript"
+        src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <!-- Slick Slider Script -->
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 </body>
 
 </html>
