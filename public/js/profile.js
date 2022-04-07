@@ -1,6 +1,5 @@
 const formProfile = document.getElementById("Profile");
 formProfile.addEventListener("submit", submitFormprofile);
-
 function submitFormprofile(e) {
     e.preventDefault();
     //Tạo 1 Mảng Rỗng
@@ -35,7 +34,11 @@ function submitFormprofile(e) {
                             )
                                 .then((res) => {
                                     alert(res.Messenger);
-                                    window.location.href = "/profile";
+                                    if (urlcart == "") {
+                                        window.location.href = "/profile";
+                                    } else {
+                                        window.location.href = "/cart";
+                                    }
                                 })
                                 .catch((err) => {
                                     alert(err);
@@ -57,7 +60,11 @@ function submitFormprofile(e) {
                 )
                     .then((res) => {
                         alert(res.Messenger);
-                        window.location.href = "/profile";
+                        if (urlcart == "") {
+                            window.location.href = "/profile";
+                        } else {
+                            window.location.href = "/cart";
+                        }
                     })
                     .catch((err) => {
                         alert(err);

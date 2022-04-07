@@ -139,7 +139,8 @@ $ID = Session()->get('UserLogin')['id']; ?>
         anh.src = URL.createObjectURL(event.target.files[0]);
         imgchoose = event.target
     }
-    var idUser = '<?php echo $ID; ?>';  
+    var idUser = '<?php echo $ID; ?>';
+    var urlcart = '<?php echo $urlcart; ?>';
 </script>
 <script src="/js/profile.js"></script>
 @endsection

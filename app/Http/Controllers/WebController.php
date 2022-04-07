@@ -43,7 +43,7 @@ class WebController extends Controller
         }
         $data = json_decode(Http::get($url), true);
         $bookdetails = $data['data'];
-        $BookLienQuan = $data['BookLienQuan'];     
+        $BookLienQuan = $data['BookLienQuan'];
         return view('details', compact('bookdetails', 'BookLienQuan'));
     }
 
@@ -73,7 +73,7 @@ class WebController extends Controller
                     if ($item['id'] == $itemCart['id']) {
 
                         $item['count'] = $item['count'] + 1;
-                        $index = array_search($item,$arr);
+                        $index = array_search($item, $arr);
                         $arr[$index] = $item;
                         $req->session()->put("idbookforcart", $arr);
                         break;
@@ -113,6 +113,9 @@ class WebController extends Controller
         if (isset($_GET['pay'])) {
             $UserLogin = session()->get('UserLogin');
             if ($UserLogin != null) {
+                if (!(isset(session()->get('UserLogin')['Email']))) {
+                    return redirect('profile');
+                }
                 if (isset(session()->get('UserLogin')['id'])) {
                     if ($req->session()->get("idbookforcart") != null) {
                         $date = date('Y-m-d H:i:s');
@@ -182,7 +185,7 @@ class WebController extends Controller
             if (isset(session()->get('UserLogin')['id']) && session()->has("idbookforcart")) {
                 $id = session()->get('UserLogin')['id'];
                 $data = Http::get('https://bookingapiiiii.herokuapp.com/khachhangbyid/' . $id);
-
+                session()->put('UserLogin', $data);
                 return view('cart', ['data' => $data, 'listCart' => $req->session()->get("idbookforcart")]);
             } else return view('cart', ['data', 'listCart' => []]);
         } else {

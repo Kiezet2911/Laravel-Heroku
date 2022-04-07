@@ -51,15 +51,15 @@ Route::view('signup', 'signup');
 
 Route::get('/profile', function () {
     if (session()->has('UserLogin')) {
+        $urlcart = strstr($_SERVER["HTTP_REFERER"], "cart") ? strstr($_SERVER["HTTP_REFERER"], "cart") : null;
         if (isset(session()->get('UserLogin')['id'])) {
             $id = session()->get('UserLogin')['id'];
             $data = Http::get('https://bookingapiiiii.herokuapp.com/khachhangbyid/' . $id);
             session()->put('UserLogin', $data);
-            return view('profile', ['data' => $data]);
+            return view('profile', compact('data', 'urlcart'));
         }
     }
 });
-
 
 Route::view('/products', 'products');
 Route::get('/products', [WebController::class, 'product'])->name('product');
